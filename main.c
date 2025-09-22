@@ -1,9 +1,12 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <stdbool.h>
 
 #define MAX_ITENS 101
 #define MAX_LINE_LEN 255
+
+const bool control= true;
 
 typedef struct {
     int numero_alimento;
@@ -36,5 +39,53 @@ int main() {
     }
     fclose(arquivo);
 
+    while (control){
+        int choice= selection();}
     return 0;
+}
+int selection() {
+    int interface;
+    printf("1. listar todas as categorias de alimentos.\n");
+    printf("2. *******\n");
+    printf("3. ********\n");
+    printf("4. *********\n");
+    printf("5. *********\n");
+    printf("6. *********\n");
+    printf("7. *********\n");
+    printf("8. *********\n");
+    printf("9. *********\n");
+
+    printf("---------------------------------------------\n");
+
+    int selection;
+    printf("Digite sua escolha:");
+    scanf("%d", &selection);
+
+    if (selection == 1) {
+
+    }
+    if (selection == 2) {
+
+    }
+    if (selection == 3) {
+
+    }
+    if (selection == 4) {
+
+    }
+    if (selection == 5) {
+
+    }
+    if (selection == 6) {
+
+    }
+    if (selection == 7) {
+
+    }
+    if (selection == 8) {
+
+    }
+    if (selection == 9) {
+
+    }
 }
