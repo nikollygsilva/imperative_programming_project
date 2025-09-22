@@ -6,7 +6,7 @@
 #define MAX_ITENS 101
 #define MAX_LINE_LEN 255
 
-const bool control= true;
+const bool control= true; //variavel de controle para manter em loop
 
 typedef struct {
     int numero_alimento;
@@ -42,7 +42,7 @@ int main() {
     while (control){
         int choice= selection();}
     return 0;
-}
+} //apenas um estrutura basica
 int selection() {
     int interface;
     printf("1. listar todas as categorias de alimentos.\n");
