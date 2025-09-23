@@ -2,6 +2,10 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdbool.h>
+#include <ctype.h>
+#include <windows.h>
+
+
 
 #define MAX_ITENS 101
 #define MAX_LINE_LEN 255
@@ -21,30 +25,8 @@ typedef struct {
 // essa funcao ira lidar com o parsing de cada linha e preencher o struct
 void parse_csv_line(const char *line, Alimento *p) {}
 
-int main() {
-    FILE *arquivo = fopen("alimentos.csv", "r");
-    if (arquivo == NULL) {
-        perror("Erro ao tentar abrir arquivo csv.");
-        exit(1);
-    }
+int menu() {
 
-    Alimento alimentos[MAX_ITENS];
-    int line_count = 0;
-    char line[MAX_LINE_LEN];
-
-    while (fgets(line, sizeof(line), arquivo) && line_count < MAX_ITENS) {
-        // para cada linha do arquivo csv, chama nossa funcao de parsing
-        parse_csv_line(line, &alimentos[line_count]);
-        line_count++;
-    }
-    fclose(arquivo);
-
-    while (control){
-        int choice= selection();}
-    return 0;
-} //apenas um estrutura basica
-int selection() {
-    int interface;
     printf("1. listar todas as categorias de alimentos.\n");
     printf("2. *******\n");
     printf("3. ********\n");
@@ -54,12 +36,18 @@ int selection() {
     printf("7. *********\n");
     printf("8. *********\n");
     printf("9. *********\n");
-
     printf("---------------------------------------------\n");
+
+
 
     int selection;
     printf("Digite sua escolha:");
-    scanf("%d", &selection);
+    scanf(" %c", &selection);
+
+    if (!isdigit(selection)) {
+        printf("Essa entrada não é um número! Tente novamente!\n");
+    }
+
 
     if (selection == 1) {
 
@@ -89,3 +77,31 @@ int selection() {
 
     }
 }
+int main() {
+    SetConsoleOutputCP(CP_UTF8);
+    FILE *arquivo = fopen("alimentos.csv", "r");
+    if (arquivo == NULL) {
+        perror("Erro ao tentar abrir arquivo csv.");
+        exit(1);
+    }
+
+    Alimento alimentos[MAX_ITENS];
+    int line_count = 0;
+    char line[MAX_LINE_LEN];
+
+    while (fgets(line, sizeof(line), arquivo) && line_count < MAX_ITENS) {
+        // para cada linha do arquivo csv, chama nossa funcao de parsing
+        parse_csv_line(line, &alimentos[line_count]);
+        line_count++;
+    }
+    fclose(arquivo);
+
+     //
+
+    while (control){
+        int choice = menu();}
+    return 0;
+
+}
+
+
