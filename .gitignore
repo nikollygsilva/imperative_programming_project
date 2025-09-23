@@ -1,3 +1,4 @@
 *.out
 .idea/editor.xml
 .idea/*
+*.exe
