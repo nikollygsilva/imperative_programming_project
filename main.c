@@ -7,17 +7,43 @@
 #define MAX_LINES 101
 #define MAX_LINE_SIZE 1024
 
+typedef enum {
+    CEREAIS_DERIVADOS,
+    FRUTAS,
+    VERDURAS_HORTALICAS,
+    CARNES,
+    LATICINIOS,
+    LEGUMINOSAS,
+    OUTROS,
+} Categoria;
+
 typedef struct {
-    int numero_alimento;
-    char descricao_alimento[256];
+    int numero;
+    char descricao[256];
     float umidade;
     int energia;
     float proteina;
     float carboidrato;
-    char categoria_alimento[128];
+    Categoria categoria;
 } Alimento;
 
 Alimento alimentos[MAX_LINES];
+
+Categoria categoria_from_string(const char *str) {
+    if (strcmp(str, "Cereais e derivados") == 0)
+        return CEREAIS_DERIVADOS;
+    if (strcmp(str, "Frutas") == 0)
+        return FRUTAS;
+    if (strcmp(str, "Verduras e hortaliças") == 0)
+        return VERDURAS_HORTALICAS;
+    if (strcmp(str, "Carnes e derivados") == 0)
+        return CARNES;
+    if (strcmp(str, "Leite e derivados") == 0)
+        return LATICINIOS;
+    if (strcmp(str, "Leguminosas e derivados") == 0)
+        return LEGUMINOSAS;
+    return OUTROS;
+}
 
 // Realiza o parsing de cada linha do arquivo
 Alimento parse_csv_line(char *line) {
@@ -31,7 +57,7 @@ Alimento parse_csv_line(char *line) {
     while (token != NULL) {
         switch (field) {
         case 0:
-            a.numero_alimento = atoi(token);
+            a.numero = atoi(token);
             break;
         case 1: {
             // Verifica se começa com aspas. Se sim, pula o primeiro caractere
@@ -43,9 +69,8 @@ Alimento parse_csv_line(char *line) {
             // Se o token for igual o tamanho do buffer aqui, strncpy não iria
             // adicionar o terminator character. Por isso, passamos sizeof - 1 e
             // depois fazemos append manual do '\0'.
-            strncpy(a.descricao_alimento, token,
-                    sizeof(a.descricao_alimento) - 1);
-            a.descricao_alimento[sizeof(a.descricao_alimento) - 1] = '\0';
+            strncpy(a.descricao, token, sizeof(a.descricao) - 1);
+            a.descricao[sizeof(a.descricao) - 1] = '\0';
             break;
         }
         case 2:
@@ -61,7 +86,7 @@ Alimento parse_csv_line(char *line) {
             a.carboidrato = atof(token);
             break;
         case 6:
-            strncpy(a.categoria_alimento, token, sizeof(a.categoria_alimento));
+            a.categoria = categoria_from_string(token);
             break;
         }
         field++;
@@ -139,19 +164,20 @@ int menu() {
 // Função auxiliar que realiza o print do nosso vetor de structs (alimentos)
 void print_tabela(int line_count) {
     for (int i = 0; i < line_count; i++) {
-        printf("%d | %s | %.1f | %d | %.1f | %.1f | %s\n",
-               alimentos[i].numero_alimento, alimentos[i].descricao_alimento,
-               alimentos[i].umidade, alimentos[i].energia,
-               alimentos[i].proteina, alimentos[i].carboidrato,
-               alimentos[i].categoria_alimento);
+        printf("%d | %s | %.1f | %d | %.1f | %.1f | %s\n", alimentos[i].numero,
+               alimentos[i].descricao, alimentos[i].umidade,
+               alimentos[i].energia, alimentos[i].proteina,
+               alimentos[i].carboidrato, alimentos[i].categoria);
     }
 }
 
-// Retorna a quantidade de elementos que o vetor, depois de filtrado com base em uma categoria, terá
-int tamanho_vetor_filtrado(Alimento vet[], int tamanho_vet, const char *categoria_escolhida){
+// Retorna a quantidade de elementos que o vetor, depois de filtrado com base em
+// uma categoria, terá
+int tamanho_vetor_filtrado(Alimento vet[], int tamanho_vet,
+                           const char *categoria_escolhida) {
     int count = 0;
-    for(int i = 0; i < tamanho_vet; i++){
-        if(strcmp(vet[i].categoria_alimento, categoria_escolhida) == 0){
+    for (int i = 0; i < tamanho_vet; i++) {
+        if (strcmp(vet[i].categoria, categoria_escolhida) == 0) {
             count++;
         }
     }
