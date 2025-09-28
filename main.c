@@ -147,6 +147,18 @@ void print_tabela(int line_count) {
     }
 }
 
+// Retorna a quantidade de elementos que o vetor, depois de filtrado com base em uma categoria, terá
+int tamanho_vetor_filtrado(Alimento vet[], int tamanho_vet, const char *categoria_escolhida){
+    int count = 0;
+    for(int i = 0; i < tamanho_vet; i++){
+        if(strcmp(vet[i].categoria_alimento, categoria_escolhida) == 0){
+            count++;
+        }
+    }
+
+    return count;
+}
+
 int main() {
     FILE *arquivo = fopen("alimentos.csv", "r");
     if (!arquivo) {
