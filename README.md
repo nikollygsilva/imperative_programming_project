@@ -1,7 +1,7 @@
 # To-Do List do Programa em C
 
 - [x] Ler os dados do CSV (Alisson)
-- [ ] Fazer parsing dos dados e armazenar em um vetor de structs (Alisson)
+- [x] Fazer parsing dos dados e armazenar em um vetor de structs (Alisson)
 - [ ] Forneça ao usuário uma interface com as seguintes opções em loop:
     - [ ] a. Liste todas as categorias de alimentos. (glaucia)
     - [ ] b. Liste todos os alimentos de certa categoria selecionada pelo usuário, em ordem alfabética de acordo com a descrição do alimento. (glaucia)
