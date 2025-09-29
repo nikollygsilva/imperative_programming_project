@@ -174,15 +174,31 @@ void print_tabela(int line_count) {
 // Retorna a quantidade de elementos que o vetor, depois de filtrado com base em
 // uma categoria, terá
 int tamanho_vetor_filtrado(Alimento vet[], int tamanho_vet,
-                           const char *categoria_escolhida) {
+                           const char *categoria_escolhida){
     int count = 0;
-    for (int i = 0; i < tamanho_vet; i++) {
-        if (strcmp(vet[i].categoria, categoria_escolhida) == 0) {
+    for(int i = 0; i < tamanho_vet; i++) {
+        if(strcmp(vet[i].categoria, categoria_escolhida) == 0){
             count++;
         }
     }
 
     return count;
+}
+
+// Com base no filtro, cria um vetor auxiliar contendo todos os alimentos que pertençam
+// àquela categoria.
+Alimento* criar_vetor_filtrado(Alimento vet[], int tamanho_vet, const char *categoria_escolhida,
+                                                            int *tamanho_filtrado){
+    int count = tamanho_vetor_filtrado(vet, tamanho_vet, categoria_escolhida);
+    Alimento *aux = (Alimento*) malloc(count*sizeof(Alimento));
+    int j = 0;
+    for(int i = 0; i < tamanho_vet; i++){
+        if(strcmp(vet[i].categoria, categoria_escolhida) == 0){
+            aux[j] = vet[i];
+        }
+    }
+
+    return aux;
 }
 
 int main() {
