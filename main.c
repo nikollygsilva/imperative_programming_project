@@ -95,6 +95,26 @@ Alimento parse_csv_line(char *line) {
     return a;
 }
 
+// Converte cada categoria em string.
+const char* categoria_to_string(Categoria cat){
+    switch (cat){
+    case CEREAIS_DERIVADOS:
+        return "Cerais e derivados";
+    case FRUTAS:
+        return "Frutas";
+    case VERDURAS_HORTALICAS:
+        return "Verduras e hortaliças";
+    case CARNES:
+        return "Carnes e derivados";
+    case LATICINIOS:
+        return "Leite e derivados";
+    case LEGUMINOSAS:
+        return "Leguminosas e derivados";
+    default:
+        return "Outros";
+    }
+}
+
 int menu() {
     printf("                                        \n");
     printf(
@@ -162,6 +182,9 @@ int menu() {
 }
 
 // Função auxiliar que realiza o print do nosso vetor de structs (alimentos)
+// MARCOS: Não mexi pq n sei se já tá funcionando, mas escrito dessa forma funciona?
+// acho que a função devia receber um Alimentos vet[] como parâmetro tbm e usar no lugar
+// de alimentos[i] pra referenciar o vetor de Alimentos, n é?
 void print_tabela(int line_count) {
     for (int i = 0; i < line_count; i++) {
         printf("%d | %s | %.1f | %d | %.1f | %.1f | %s\n", alimentos[i].numero,
@@ -174,10 +197,10 @@ void print_tabela(int line_count) {
 // Retorna a quantidade de elementos que o vetor, depois de filtrado com base em
 // uma categoria, terá
 int tamanho_vetor_filtrado(Alimento vet[], int tamanho_vet,
-                           const char *categoria_escolhida){
+                           Categoria categoria_escolhida) {
     int count = 0;
-    for(int i = 0; i < tamanho_vet; i++) {
-        if(strcmp(vet[i].categoria, categoria_escolhida) == 0){
+    for (int i = 0; i < tamanho_vet; i++) {
+        if (vet[i].categoria == categoria_escolhida) {
             count++;
         }
     }
@@ -187,16 +210,28 @@ int tamanho_vetor_filtrado(Alimento vet[], int tamanho_vet,
 
 // Com base no filtro, cria um vetor auxiliar contendo todos os alimentos que pertençam
 // àquela categoria.
-Alimento* criar_vetor_filtrado(Alimento vet[], int tamanho_vet, const char *categoria_escolhida,
-                                                            int *tamanho_filtrado){
-    int count = tamanho_vetor_filtrado(vet, tamanho_vet, categoria_escolhida);
-    Alimento *aux = (Alimento*) malloc(count*sizeof(Alimento));
+Alimento* criar_vetor_filtrado(Alimento vet[], int tamanho_vet, Categoria categoria_escolhida,
+                               int *tamanho_filtrado){
+    *tamanho_filtrado = tamanho_vetor_filtrado(vet, tamanho_vet, categoria_escolhida);
+    
+    if(*tamanho_filtrado == 0){
+        return NULL;
+    }
+
+    Alimento *aux = (Alimento*) malloc((*tamanho_filtrado) * sizeof(Alimento));
+    if(aux == NULL){
+        perror("Falha ao alocar memoria para vetor filtrado");
+        return NULL;
+    }
+
     int j = 0;
     for(int i = 0; i < tamanho_vet; i++){
-        if(strcmp(vet[i].categoria, categoria_escolhida) == 0){
+        if(vet[i].categoria == categoria_escolhida){
             aux[j] = vet[i];
+            j++;
         }
     }
+
 
     return aux;
 }
