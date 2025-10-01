@@ -1,4 +1,4 @@
-Numero do alimento;Descricao do alimento;Umidade (%);Energia (Kcal);Proteina (g);Carboidrato (g);Categoria do alimento
+Numero do alimento;Descricao do alimento;Umidade (%);Energia (Kcal) ;Proteina (g);Carboidrato (g);Categoria do alimento
 7;"Aveia, flocos, crua";9.1;394;13.9;66.6;Cereais e derivados
 13;"Biscoito, salgado, cream cracker";4.1;432;10.1;68.7;Cereais e derivados
 25;"Cereal matinal, milho";5.5;365;7.2;83.8;Cereais e derivados
