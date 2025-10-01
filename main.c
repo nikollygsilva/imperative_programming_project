@@ -5,7 +5,7 @@
 #include <string.h>
 #include <windows.h> //Na teoria, isso será desativado nos outros sistemas operacionais
 
-#define MAX_LINES 101 //
+#define MAX_LINES 101
 #define MAX_LINE_SIZE 1024
 
 const bool control= true; //variavel de controle para manter em loop
@@ -26,8 +26,7 @@ void plataforma() { //funçao apenas para colocar os comandinhos
 
 }
 
-
-typedef enum { //
+typedef enum {
     CEREAIS_DERIVADOS,
     FRUTAS,
     VERDURAS_HORTALICAS,
@@ -36,6 +35,7 @@ typedef enum { //
     LEGUMINOSAS,
     OUTROS,
 } Categoria;
+
 
 
 typedef struct {
@@ -53,7 +53,7 @@ Alimento alimentos[MAX_LINES];
 Categoria categoria_from_string(const char *str) {
     if (strcmp(str, "Cereais e derivados") == 0)
         return CEREAIS_DERIVADOS;
-    if (strcmp(str, "Frutas e derivados") == 0)
+    if (strcmp(str, "Frutas") == 0)
         return FRUTAS;
     if (strcmp(str, "Verduras e hortaliças") == 0)
         return VERDURAS_HORTALICAS;
@@ -210,120 +210,119 @@ int categoria_usuario(int line_count) {
 
 //-----------------------------------------------------------------------------------------
 
+int menu() {
+    printf("                                        \n");
+    printf(
+        "===================MENU==========================================\n");
+    printf("                                        \n");
+    printf("1. LISTAR TODAS AS CATEGORIAS DE ALIMENTO.\n");
+    printf("2. *******\n");
+    printf("3. ********\n");
+    printf("4. *********\n");
+    printf("5. *********\n");
+    printf("6. *********\n");
+    printf("7. *********\n");
+    printf("8. *********\n");
+    printf("9. *********\n");
+    printf(
+        "------------------------------------------------------------------\n");
 
-    // Função auxiliar que realiza o print do nosso vetor de structs (alimentos)
-    //void print_tabela(int line_count) {
-    // for (int i = 0; i < line_count; i++) {
-    // printf("%d | %s | %.1f | %d | %.1f | %.1f | %s\n", alimentos[i].numero,
-    //  alimentos[i].descricao, alimentos[i].umidade,
-    // alimentos[i].energia, alimentos[i].proteina,
-    //alimentos[i].carboidrato, alimentos[i].categoria);
-    // }
-    //}
+    char selection[100];
+    printf("Digite o número da opção desejada:");
+    scanf(" %99s", selection);
+    printf("-------------------------------------\n");
 
-    // Retorna a quantidade de elementos que o vetor, depois de filtrado com base em
-    // uma categoria, terá
-    //int tamanho_vetor_filtrado(Alimento vet[], int tamanho_vet,
-    // const char *categoria_escolhida) {
-    //int count = 0;
-    //for (int i = 0; i < tamanho_vet; i++) {
-    //if (strcmp(vet[i].categoria, categoria_escolhida) == 0) {
-    //count++;
-    //}
-    // }
-
-    //   return count;
-    // }
-//----------------------------------------------------------------------------------------------------------------------
-    int menu(int line_count) {
-        printf("                                        \n");
-        printf(
-            "===================MENU==========================================\n");
-        printf("                                        \n");
-        printf("1. LISTAR TODAS AS CATEGORIAS DE ALIMENTO.\n");
-        printf("2. LISTAR TODOS ALIMENTOS DE CATEGORIA ESPECÍFICA\n");
-        printf("3. ********\n");
-        printf("4. *********\n");
-        printf("5. *********\n");
-        printf("6. *********\n");
-        printf("7. *********\n");
-        printf("8. *********\n");
-        printf("9. *********\n");
-        printf(
-            "------------------------------------------------------------------\n");
-
-        char selection[100];
-        printf("Digite o número da opção desejada:");
-        scanf(" %99s", selection);
-        printf("-------------------------------------\n");
-
-        if (strlen(selection) > 1) {
-            printf("= Você digitou mais de um caractere! Digite apenas um.\n");
-            return 0;
-        }
-
-        else if (!isdigit(selection[0])) {
-            printf("= Entrada Inválida! Tente novamente!\n");
-            return 0;
-        } else {
-            switch (selection[0]) {
-                case '1': all_categorias(line_count);
-                    break;
-                case '2': categoria_usuario(line_count);
-                    break;
-                case '3':
-                    printf("Apague esse printf e coloque sua função\n");
-                    break;
-                case '4':
-                    printf("Apague esse printf e coloque sua função\n");
-                    break;
-                case '5':
-                    printf("Apague esse printf e coloque sua função\n");
-                    break;
-                case '6':
-                    printf("Apague esse printf e coloque sua função\n");
-                    break;
-                case '7':
-                    printf("Apague esse printf e coloque sua função\n");
-                    break;
-                case '8':
-                    printf("Apague esse printf e coloque sua função\n");
-                    break;
-                case '9':
-                    printf("Apague esse printf e coloque sua função\n");
-                    break;
-                default:
-                    printf("Opção inválida! Digite uma opção válida");
-            }
-        }
+    if (strlen(selection) > 1) {
+        printf("= Você digitou mais de um caractere! Digite apenas um.\n");
         return 0;
     }
 
-//-----------------------------------------------------------------------------------------------------------
-    int main() {
-        SetConsoleOutputCP(CP_UTF8);
-        FILE *arquivo = fopen("alimentos.csv", "r");//
-        if (!arquivo) {
-            perror("Erro ao tentar abrir arquivo csv.");
-            return 1;
+    else if (!isdigit(selection[0])) {
+        printf("= Entrada Inválida! Tente novamente!\n");
+        return 0;
+    } else {
+        switch (selection[0]) {
+        case '1':
+            printf("Apague esse printf e coloque sua função\n");
+            break;
+        case '2':
+            printf("Apague esse printf e coloque sua função\n");
+            break;
+        case '3':
+            printf("Apague esse printf e coloque sua função\n");
+            break;
+        case '4':
+            printf("Apague esse printf e coloque sua função\n");
+            break;
+        case '5':
+            printf("Apague esse printf e coloque sua função\n");
+            break;
+        case '6':
+            printf("Apague esse printf e coloque sua função\n");
+            break;
+        case '7':
+            printf("Apague esse printf e coloque sua função\n");
+            break;
+        case '8':
+            printf("Apague esse printf e coloque sua função\n");
+            break;
+        case '9':
+            printf("Apague esse printf e coloque sua função\n");
+            break;
+        default:
+            printf("Opção inválida! Digite uma opção válida");
         }
+    }
+    return 0;
+}
 
-        char line[MAX_LINE_SIZE];
-        int line_count = 0;
+// Função auxiliar que realiza o print do nosso vetor de structs (alimentos)
+void print_tabela(int line_count) {
+    for (int i = 0; i < line_count; i++) {
+        printf("%d | %s | %.1f | %d | %.1f | %.1f | %s\n", alimentos[i].numero,
+               alimentos[i].descricao, alimentos[i].umidade,
+               alimentos[i].energia, alimentos[i].proteina,
+               alimentos[i].carboidrato, alimentos[i].categoria);
+    }
+}
 
-        // lê e descarta a primeira linha do arquivo (header)
-        fgets(line, sizeof(line), arquivo);
+// Retorna a quantidade de elementos que o vetor, depois de filtrado com base em
+// uma categoria, terá
+int tamanho_vetor_filtrado(Alimento vet[], int tamanho_vet,const char *categoria_escolhida) {
+    int count = 0;
+    for (int i = 0; i < tamanho_vet; i++) {
+        if (strcmp(vet[i].categoria, categoria_escolhida) == 0) {
+            count++;
+        }
+    }
 
-        while (fgets(line, sizeof(line), arquivo) && line_count < MAX_LINES) {
-            alimentos[line_count] = parse_csv_line(line);
-            line_count++;
-        } fclose(arquivo);
-        plataforma();
-    while (control){
-        //print_tabela(line_count);
+    return count;
+}
+
+int main() {
+    SetConsoleOutputCP(CP_UTF8);
+    FILE *arquivo = fopen("alimentos.csv", "r");
+    if (!arquivo) {
+        perror("Erro ao tentar abrir arquivo csv.");
+        return 1;
+    }
+
+    char line[MAX_LINE_SIZE];
+    int line_count = 0;
+
+    // lê e descarta a primeira linha do arquivo (header)
+    fgets(line, sizeof(line), arquivo);
+
+    while (fgets(line, sizeof(line), arquivo) && line_count < MAX_LINES) {
+        alimentos[line_count] = parse_csv_line(line);
+        line_count++;
+    }
+
+    fclose(arquivo);
+    plataforma();
+    print_tabela(line_count);
+    while (control) {
         menu(line_count);}}
-
-
 
 
 
