@@ -145,41 +145,62 @@ Alimento* criar_vetor_filtrado(Alimento vet[], int tamanho_vet, Categoria catego
     return aux;
 }
 
-// compara dois ints para definir o maior.
-int cmp_int(const void *a, const void *b){
-    return (*(int *)a - *(int *)b);
+
+
+int cmp_alimento(const void *pa, const void *pb, void *ctx) {
+    const Alimento *a = pa;
+    const Alimento *b = pb;
+    Campo campo = *(Campo *)ctx;
+
+    switch (campo) {
+        case DESCRICAO:
+            return strcmp(a->descricao, b->descricao);
+        case UMIDADE:
+            if(a->umidade < b->umidade) return -1;
+            if(a->umidade > b->umidade) return 1;
+            return 0;
+        case ENERGIA:
+            if(a->energia < b->energia) return -1;
+            if(a->energia > b->energia) return 1;
+            return 0;
+        case PROTEINA:
+            if(a->proteina < b->proteina) return -1;
+            if(a->proteina > b->proteina) return 1;
+            return 0;
+        case CARBOIDRATO:
+            if(a->carboidrato < b->carboidrato) return -1;
+            if(a->carboidrato > b->carboidrato) return 1;
+            return 0;
+        case CATEGORIA:
+            if(a->categoria < b->categoria) return -1;
+            if(a->categoria > b->categoria) return 1;
+            return 0;
+    }
+    return -2; // se chegar aqui, algo está errado
 }
-// compara dois double para definir o maior.
-int cmp_double(const void *a, const void *b){
-    if(*(double *)a < *(double *)b) return -1;
-    if(*(double *)a > *(double *)b) return 1;
-    return 0;
-}
-// compara duas strings para definir o maior.
-int cmp_str(const void *a, const void *b){
-    return strcmp(*(const char **)a, *(const char **)b);
-}
+
 
 // Troca dois elementos de lugar entre si
 void trocarElementos(void *a, void *b, size_t tamanhoElemento){
     char temp[tamanhoElemento];
     memcpy(temp, a, tamanhoElemento);
     memcpy(a, b, tamanhoElemento);
-    memcpy(temp, b, tamanhoElemento);
+    memcpy(b, temp, tamanhoElemento);
 }
 
 // Algoritmo de ordenação genérica.
 // Independente do tipo de dado passado, a função ordena
-void sortAlg(void *inicio, int tamanhoElemento, int qtdElementos, int (*cmp)(const void *, const void *)){
+void sortAlg(void *inicio, int tamanhoElemento, int qtdElementos, int (*cmp)(const void *, const void *, void *), void *ctx){
     char *arr = (char *)inicio;
 
     for(int i = 0; i < qtdElementos - 1; i++){
         // variável para checar se algum elemento foi trocado de lugar
         int troca = 0;
+
         for(int j = 0; j < qtdElementos - i - 1; j++){
             void *elem1 = arr + j * tamanhoElemento;
             void *elem2 = arr + (j + 1) * tamanhoElemento;
-            if(cmp(elem1, elem2) > 0){
+            if(cmp(elem1, elem2, ctx) > 0){
                 swap(elem1, elem2, tamanhoElemento);
                 troca = 1;
             }
