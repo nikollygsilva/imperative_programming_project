@@ -24,7 +24,7 @@ Categoria categoria_from_string(const char *str) {
 const char* categoria_to_string(Categoria cat){
     switch (cat){
     case CEREAIS_DERIVADOS:
-        return "Cerais e derivados";
+        return "Cereais e derivados";
     case FRUTAS:
         return "Frutas";
     case VERDURAS_HORTALICAS:
@@ -209,3 +209,5 @@ void sortAlg(void *inicio, int tamanhoElemento, int qtdElementos, int (*cmp)(con
         if(!troca) break;
     }
 }
+
+

@@ -46,3 +46,4 @@ void trocarElementos(void *a, void *b, size_t tamanhoElemento);
 void sortAlg(void *inicio, int tamanhoElemento, int qtdElementos, int (*cmp)(const void *, const void *, void *), void *ctx);
 
 #endif
+
