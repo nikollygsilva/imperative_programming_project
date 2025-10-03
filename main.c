@@ -1,4 +1,3 @@
-#include "funcoes.h"
 #include <ctype.h>
 #include <stdbool.h>
 #include <stdio.h>
@@ -248,8 +247,6 @@ int menu(int line_count) {
 }
 
 
-
-
 int main() {
     SetConsoleOutputCP(CP_UTF8);
     FILE *arquivo = fopen("alimentos.csv", "r");
@@ -271,10 +268,7 @@ int main() {
 
     fclose(arquivo);
     plataforma();
-    //print_tabela(line_count);
+    print_tabela(line_count);
     while (control) {
         menu(line_count);}
 }
-
-
-

@@ -2,3 +2,5 @@
 .idea/editor.xml
 .idea/*
 *.exe
+*.schema.json
+*.table.json
