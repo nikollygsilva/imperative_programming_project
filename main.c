@@ -1,10 +1,9 @@
+#include "funcoes.h"
 #include <ctype.h>
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "funcoes.h"
-
 
 int menu() {
     printf("                                        \n");
@@ -71,7 +70,6 @@ int menu() {
     }
     return 0;
 }
-
 
 int main() {
     FILE *arquivo = fopen("alimentos.csv", "r");

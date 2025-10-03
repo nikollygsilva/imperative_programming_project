@@ -35,14 +35,19 @@ typedef struct {
     Categoria categoria;
 } Alimento;
 
+Alimento alimentos[MAX_LINES];
 Categoria categoria_from_string(const char *str);
-const char* categoria_to_string(Categoria cat);
+const char *categoria_to_string(Categoria cat);
 Alimento parse_csv_line(char *line);
 void print_tabela(int line_count);
-int tamanho_vetor_filtrado(Alimento vet[], int tamanho_vet, Categoria categoria_escolhida);
-Alimento* criar_vetor_filtrado(Alimento vet[], int tamanho_vet, Categoria categoria_escolhida, int *tamanho_filtrado);
+int tamanho_vetor_filtrado(Alimento vet[], int tamanho_vet,
+                           Categoria categoria_escolhida);
+Alimento *criar_vetor_filtrado(Alimento vet[], int tamanho_vet,
+                               Categoria categoria_escolhida,
+                               int *tamanho_filtrado);
 int cmp_alimento(const void *pa, const void *pb, void *ctx);
 void trocarElementos(void *a, void *b, size_t tamanhoElemento);
-void sortAlg(void *inicio, int tamanhoElemento, int qtdElementos, int (*cmp)(const void *, const void *, void *), void *ctx);
+void sortAlg(void *inicio, int tamanhoElemento, int qtdElementos,
+             int (*cmp)(const void *, const void *, void *), void *ctx);
 
 #endif
