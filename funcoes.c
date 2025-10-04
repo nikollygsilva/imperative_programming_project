@@ -3,6 +3,8 @@
 #include <stdbool.h>
 #include <stdlib.h>
 #include <string.h>
+#include <ctype.h>
+#include <stdbool.h>
 
 Categoria categoria_from_string(const char *str) {
     if (strcmp(str, "Cereais e derivados") == 0)
@@ -24,7 +26,7 @@ Categoria categoria_from_string(const char *str) {
 const char *categoria_to_string(Categoria cat) {
     switch (cat) {
     case CEREAIS_DERIVADOS:
-        return "Cerais e derivados";
+        return "Cereais e derivados";
     case FRUTAS:
         return "Frutas";
     case VERDURAS_HORTALICAS:
@@ -118,20 +120,18 @@ int tamanho_vetor_filtrado(Alimento vet[], int tamanho_vet,
     return count;
 }
 
-// Com base no filtro, cria um vetor auxiliar contendo todos os alimentos que
-// pertençam àquela categoria.
-Alimento *criar_vetor_filtrado(Alimento vet[], int tamanho_vet,
-                               Categoria categoria_escolhida,
-                               int *tamanho_filtrado) {
-    *tamanho_filtrado =
-        tamanho_vetor_filtrado(vet, tamanho_vet, categoria_escolhida);
-
-    if (*tamanho_filtrado == 0) {
+// Com base no filtro, cria um vetor auxiliar contendo todos os alimentos que pertençam
+// àquela categoria.
+Alimento* criar_vetor_filtrado(Alimento vet[], int tamanho_vet, Categoria categoria_escolhida,
+                               int *tamanho_filtrado){
+    *tamanho_filtrado = tamanho_vetor_filtrado(vet, tamanho_vet, categoria_escolhida);
+    
+    if(*tamanho_filtrado == 0){
         return NULL;
     }
 
-    Alimento *aux = (Alimento *)malloc((*tamanho_filtrado) * sizeof(Alimento));
-    if (aux == NULL) {
+    Alimento *aux = (Alimento*) malloc((*tamanho_filtrado) * sizeof(Alimento));
+    if(aux == NULL){
         perror("Falha ao alocar memoria para vetor filtrado");
         return NULL;
     }
@@ -144,8 +144,11 @@ Alimento *criar_vetor_filtrado(Alimento vet[], int tamanho_vet,
         }
     }
 
+
     return aux;
 }
+
+
 
 int cmp_alimento(const void *pa, const void *pb, void *ctx) {
     const Alimento *a = pa;
@@ -153,44 +156,35 @@ int cmp_alimento(const void *pa, const void *pb, void *ctx) {
     Campo campo = *(Campo *)ctx;
 
     switch (campo) {
-    case DESCRICAO:
-        return strcmp(a->descricao, b->descricao);
-    case UMIDADE:
-        if (a->umidade < b->umidade)
-            return -1;
-        if (a->umidade > b->umidade)
-            return 1;
-        return 0;
-    case ENERGIA:
-        if (a->energia < b->energia)
-            return -1;
-        if (a->energia > b->energia)
-            return 1;
-        return 0;
-    case PROTEINA:
-        if (a->proteina < b->proteina)
-            return -1;
-        if (a->proteina > b->proteina)
-            return 1;
-        return 0;
-    case CARBOIDRATO:
-        if (a->carboidrato < b->carboidrato)
-            return -1;
-        if (a->carboidrato > b->carboidrato)
-            return 1;
-        return 0;
-    case CATEGORIA:
-        if (a->categoria < b->categoria)
-            return -1;
-        if (a->categoria > b->categoria)
-            return 1;
-        return 0;
+        case DESCRICAO:
+            return strcmp(a->descricao, b->descricao);
+        case UMIDADE:
+            if(a->umidade < b->umidade) return -1;
+            if(a->umidade > b->umidade) return 1;
+            return 0;
+        case ENERGIA:
+            if(a->energia < b->energia) return -1;
+            if(a->energia > b->energia) return 1;
+            return 0;
+        case PROTEINA:
+            if(a->proteina < b->proteina) return -1;
+            if(a->proteina > b->proteina) return 1;
+            return 0;
+        case CARBOIDRATO:
+            if(a->carboidrato < b->carboidrato) return -1;
+            if(a->carboidrato > b->carboidrato) return 1;
+            return 0;
+        case CATEGORIA:
+            if(a->categoria < b->categoria) return -1;
+            if(a->categoria > b->categoria) return 1;
+            return 0;
     }
     return -2; // se chegar aqui, algo está errado
 }
 
+
 // Troca dois elementos de lugar entre si
-void trocarElementos(void *a, void *b, size_t tamanhoElemento) {
+void trocarElementos(void *a, void *b, size_t tamanhoElemento){
     char temp[tamanhoElemento];
     memcpy(temp, a, tamanhoElemento);
     memcpy(a, b, tamanhoElemento);
