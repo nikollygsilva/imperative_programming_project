@@ -1,3 +1,4 @@
+#include "funcoes.h"
 #include <ctype.h>
 #include <stdbool.h>
 #include <stdio.h>
@@ -117,7 +118,7 @@ void all_categorias(int n) {
         }
     }
 
-//Função com o intuito de colocar os iitens em ordem alfabetica.
+//Função com o intuito de colocar os itens em ordem alfabetica.
 int comparafuncao2(const void *a, const void *b) {
     return strcmp(((Alimento *)a)->descricao, ((Alimento *)b)->descricao);
 }
