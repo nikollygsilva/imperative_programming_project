@@ -29,84 +29,7 @@ void plataforma() { //funçao apenas para colocar os comandinhos
 
 Alimento alimentos[MAX_LINES];
 //------------------------------------------------------------------------------
-Categoria categoria_from_string(const char *str) {
-    if (strcmp(str, "Cereais e derivados") == 0)
-        return CEREAIS_DERIVADOS;
-    if (strcmp(str, "Frutas e derivados") == 0)
-        return FRUTAS;
-    if (strcmp(str, "Verduras, hortaliças e derivados") == 0)
-        return VERDURAS_HORTALICAS;
-    if (strcmp(str, "Carnes e derivados") == 0)
-        return CARNES;
-    if (strcmp(str, "Leite e derivados") == 0)
-        return LATICINIOS;
-    if (strcmp(str, "Leguminosas e derivados") == 0)
-        return LEGUMINOSAS;
-    return OUTROS;
-}
 
-const char* categoria_to_string(Categoria c) {
-    switch(c) {
-        case CEREAIS_DERIVADOS: return "Cereais e derivados";
-        case FRUTAS: return "Frutas e derivados";
-        case VERDURAS_HORTALICAS: return "Verduras, hortaliças e derivados";
-        case CARNES: return "Carnes e derivados";
-        case LATICINIOS: return "Leite e derivados";
-        case LEGUMINOSAS: return "Leguminosas e derivados";
-        default: return "Outros";
-    }
-}
-
-
-// Realiza o parsing de cada linha do arquivo
-Alimento parse_csv_line(char *line) {
-    line[strcspn(line, "\n")] = '\0';
-
-    char *token;
-    int field = 0;
-    Alimento a;
-
-    token = strtok(line, ";");
-    while (token != NULL) {
-        switch (field) {
-        case 0:
-            a.numero = atoi(token);
-            break;
-        case 1: {
-            // Verifica se começa com aspas. Se sim, pula o primeiro caractere
-            // ("), e transforma o último (") em um terminator character.
-            if (token[0] == '"') {
-                token++;
-                token[strlen(token) - 1] = '\0';
-            }
-            // Se o token for igual o tamanho do buffer aqui, strncpy não iria
-            // adicionar o terminator character. Por isso, passamos sizeof - 1 e
-            // depois fazemos append manual do '\0'.
-            strncpy(a.descricao, token, sizeof(a.descricao) - 1);
-            a.descricao[sizeof(a.descricao) - 1] = '\0';
-            break;
-        }
-        case 2:
-            a.umidade = atof(token);
-            break;
-        case 3:
-            a.energia = atoi(token);
-            break;
-        case 4:
-            a.proteina = atof(token);
-            break;
-        case 5:
-            a.carboidrato = atof(token);
-            break;
-        case 6:
-            a.categoria = categoria_from_string(token);
-            break;
-        }
-        field++;
-        token = strtok(NULL, ";");
-    }
-    return a;
-}
 void all_categorias(int n) {
     printf("As categorias existentes na ficha são:\n");
         bool impressos[10] = {false}; // array para marcar categorias já impressas
@@ -115,8 +38,8 @@ void all_categorias(int n) {
                 printf("%s\n", categoria_to_string(alimentos[i].categoria));
                 impressos[alimentos[i].categoria] = true;
             }
-        }
     }
+}
 
 //Função com o intuito de colocar os itens em ordem alfabetica.
 int comparafuncao2(const void *a, const void *b) {
