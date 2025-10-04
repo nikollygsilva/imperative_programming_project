@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include "funcoes.h"
 #include <windows.h> //Na teoria, isso será desativado nos outros sistemas operacionais
 
 #define MAX_LINES 101
@@ -55,8 +56,6 @@ const char* categoria_to_string(Categoria c) {
         default: return "Outros";
     }
 }
-
-
 // Realiza o parsing de cada linha do arquivo
 Alimento parse_csv_line(char *line) {
     line[strcspn(line, "\n")] = '\0';
@@ -106,9 +105,14 @@ Alimento parse_csv_line(char *line) {
     }
     return a;
 }
+
+
+//OPTEI POR DEIXAR NA MAIN MESMO POIS ANTES DO PULL JA HAVIA FEITO E ESTA FUNCIONANDO ACHO O TEMPO CURTO PARA MUDAR.
+//========================================================================================================================
+// Função que imprime as strings de diferentes categorias e por meio de uma variavel de controle controla se ja foi imprimida para não haver impressão duplicada.
 void all_categorias(int n) {
     printf("As categorias existentes na ficha são:\n");
-        bool impressos[10] = {false}; // array para marcar categorias já impressas
+        bool impressos[10] = {false};
     for (int i = 0; i < n; i++) {
             if (!impressos[alimentos[i].categoria]) {
                 printf("%s\n", categoria_to_string(alimentos[i].categoria));
@@ -116,13 +120,11 @@ void all_categorias(int n) {
             }
         }
     }
-
-//Função com o intuito de colocar os iitens em ordem alfabetica.
+//Função feita para comparação completa de strings (ver se está em ordem alfabetica) e será utilizada pela funçao (da biblioteca) qsort.
 int comparafuncao2(const void *a, const void *b) {
     return strcmp(((Alimento *)a)->descricao, ((Alimento *)b)->descricao);
 }
-
-
+//Essa funcao itera sobre as linhas da categoria e compara com a categoria solicitada (cat) e guarda esse objeto em um vetor. Logo apos são organizdos pela função qsort e imprimidos em ordem.
 void categoriavalidacao(Alimento alimentos[], int line_count, Categoria cat) {
     Alimento selecionados[line_count];
     int count = 0;
@@ -146,6 +148,7 @@ void categoriavalidacao(Alimento alimentos[], int line_count, Categoria cat) {
                selecionados[i].carboidrato);
     }
 }
+// Uso da função categoria para impressao das categorias solicitadas
 int categoria_usuario(int line_count) {
         printf("Categorias\n");
         printf("1- Cereais e derivados\n");
@@ -181,24 +184,25 @@ int categoria_usuario(int line_count) {
                 case '6': categoriavalidacao(alimentos,line_count,LEGUMINOSAS);break;
                 case '7':categoriavalidacao(alimentos,line_count,OUTROS);break;}
         }};
+//========================================================================================================================
+
 
 
 int menu(int line_count) {
-    printf("                                        \n");
-    printf(
-        "===================MENU==========================================\n");
+    printf("                                                                                                                                \n");
+    printf("===================MENU=======================================================================================================\n");
     printf("                                        \n");
     printf("1. LISTAR TODAS AS CATEGORIAS DE ALIMENTO.\n");
-    printf("2. LISTAR TODOS ALIMENTOS DE CATEGORIA ESPECÍFICA E EM ORDEM ALFABETICA\n");
-    printf("3. LISTAR TODOS ALIMENTOS DE CATEGORIA E EM ORDEM DECRESCENTE COM RESPEITO À CAPACIDADE ENERGETICAS  DOS ALIMENTOS\n");
-    printf("4. *********\n");
-    printf("5. *********\n");
-    printf("6. *********\n");
-    printf("7. *********\n");
-    printf("8. *********\n");
-    printf("9. *********\n");
+    printf("2. LISTAR TODOS ALIMENTOS DE CATEGORIA ESPECÍFICA E EM ORDEM ALFABETICA.\n");
+    printf("3. LISTAR TODOS ALIMENTOS DE CATEGORIA E EM ORDEM DECRESCENTE COM RESPEITO À CAPACIDADE ENERGETICAS  DOS ALIMENTOS.\n");
+    printf("4. LISTAR ALIMENTOS DE CERTA CATEGORIA COM MAIOR PERCENTUAL DE UMIDADE.\n");
+    printf("5. LISTAR ALIMENTOS DE CERTA CATEGORIA COM MAIOR CAPACIDADE ENERGÉTICA.\n");
+    printf("6. LISTAR ALIMENTOS DE CERTA CATEGORIA COM MAIOR QUANTIDADE DE PROTEÍNA.\n");
+    printf("7. LISTAR ALIMENTOS DE CERTA CATEGORIA COM MAIOR QUANTIDADE DE CARBOIDRATO.\n");
+    printf("8. LISTAR ALIMENTOS DE CERTA CATEGORIA QUE POSSUAM A RELAÇÃO MAIS ALTA ENTRE ENERGIA E PROTEÍNA.\n");
+    printf("9. LISTAR ALIMENTOS DE CERTA CATEGORIA QUE POSSUAM A RELAÇÃO MAIS ALTA ENTRE ENERGIA E CARBOIDRATO.\n");
     printf(
-        "------------------------------------------------------------------\n");
+        "------------------------------------------------------------------------------------------------------\n");
 
     char selection[100];
     printf("Digite o número da opção desejada:");
@@ -246,7 +250,6 @@ int menu(int line_count) {
     return 0;
 }
 
-
 int main() {
     SetConsoleOutputCP(CP_UTF8);
     FILE *arquivo = fopen("alimentos.csv", "r");
@@ -268,7 +271,7 @@ int main() {
 
     fclose(arquivo);
     plataforma();
-    print_tabela(line_count);
+    // print_tabela(line_count);
     while (control) {
         menu(line_count);}
 }

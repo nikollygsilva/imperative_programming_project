@@ -97,14 +97,14 @@ Alimento parse_csv_line(char *line) {
 // funciona? acho que a função devia receber um Alimentos vet[] como parâmetro
 // tbm e usar no lugar de alimentos[i] pra referenciar o vetor de Alimentos, n
 // é?
-void print_tabela(int line_count) {
-    for (int i = 0; i < line_count; i++) {
-        printf("%d | %s | %.1f | %d | %.1f | %.1f | %u\n", alimentos[i].numero,
-               alimentos[i].descricao, alimentos[i].umidade,
-               alimentos[i].energia, alimentos[i].proteina,
-               alimentos[i].carboidrato, alimentos[i].categoria);
-    }
-}
+// void print_tabela(int line_count) {
+    // for (int i = 0; i < line_count; i++) {
+        // printf("%d | %s | %.1f | %d | %.1f | %.1f | %u\n", alimentos[i].numero,
+               // alimentos[i].descricao, alimentos[i].umidade,
+               // alimentos[i].energia, alimentos[i].proteina,
+               // alimentos[i].carboidrato, alimentos[i].categoria);
+    // }
+// }
 
 // Retorna a quantidade de elementos que o vetor, depois de filtrado com base em
 // uma categoria, terá
@@ -215,3 +215,8 @@ void sortAlg(void *inicio, int tamanhoElemento, int qtdElementos,
             break;
     }
 }
+
+
+
+
+
