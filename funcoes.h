@@ -38,12 +38,19 @@ typedef enum {
 
 extern Alimento alimentos[MAX_LINES];
 extern bool control; // Variável de controle para manter em loop
+extern int tamanho_vetor_alimentos;
 
+// Essa função recebe um ponteiro para uma string que contém uma linha inteira
+// do arquivo csv. Ela quebra essa string em tokens (um ponteiro para cada
+// pedaço da string após divisão), e preenche e retorna um struct Alimento com
+// os dados preenchidos vindo do csv.
 Alimento parse_csv_line(char *line);
 Categoria categoria_from_string(const char *str);
 
 const char *categoria_to_string(Categoria cat);
-void all_categorias(int n);
+
+// Função que imprime todas as categorias.
+void print_categorias(bool categorias_como_opcao);
 
 int tamanho_vetor_filtrado(Alimento vet[], int tamanho_vet,
                            Categoria categoria_escolhida);
@@ -54,17 +61,18 @@ Alimento *criar_vetor_filtrado(Alimento vet[], int tamanho_vet,
 
 int cmp_alimento(const void *pa, const void *pb, void *ctx);
 
-void trocarElementos(void *a, void *b, int tamanhoElemento);
+void trocar_elementos(void *a, void *b, int tamanhoElemento);
 
-void sortAlg(void *inicio, int tamanhoElemento, int qtdElementos,
-             int (*cmp)(const void *, const void *, void *), void *ctx,
-             int ordem);
+void bubble_sort_generico(void *inicio, int tamanhoElemento, int qtdElementos,
+                          int (*cmp)(const void *, const void *, void *),
+                          void *ctx, int ordem);
 
-void imprimirFiltrados(Alimento vet[], int tamanho_vet, Categoria cat,
-                       Campo campo_ordenacao, int ordem, int tamanho_resultado);
+void print_vetor_filtrado(Alimento vet[], Categoria cat, Campo campo_ordenacao,
+                          int ordem, int tamanho_resultado);
 
-Categoria obter_categoria_do_usuario();
+Categoria obter_categoria_alimento_selecionada();
 int obter_tamanho_vetor_do_usuario();
-int menu(int line_count);
+int deseja_voltar_menu();
+int menu();
 
 #endif

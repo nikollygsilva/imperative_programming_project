@@ -1,6 +1,8 @@
 #include "funcoes.h"
 #include <stdio.h>
 
+int tamanho_vetor_alimentos = 0;
+
 int main() {
 #ifdef _WIN32
 #include <windows.h>
@@ -14,19 +16,20 @@ int main() {
     }
 
     char line[MAX_LINE_SIZE];
-    int line_count = 0;
 
-    // lê e descarta a primeira linha do arquivo (header)
+    // Lê e descarta a primeira linha do arquivo (header)
     fgets(line, sizeof(line), arquivo);
 
-    while (fgets(line, sizeof(line), arquivo) && line_count < MAX_LINES) {
-        alimentos[line_count] = parse_csv_line(line);
-        line_count++;
+    while (fgets(line, sizeof(line), arquivo) &&
+           tamanho_vetor_alimentos < MAX_LINES) {
+        alimentos[tamanho_vetor_alimentos] = parse_csv_line(line);
+        tamanho_vetor_alimentos++;
     }
 
     fclose(arquivo);
 
     while (control) {
-        menu(line_count);
+        menu();
+        deseja_voltar_menu();
     }
 }
