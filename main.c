@@ -61,9 +61,12 @@ Categoria obter_categoria_do_usuario() {
 }
 
 int obter_tamanho_vetor_do_usuario(){
+    puts("Digite o filtro de quantidade de alimentos que deseja que apareça na exibição:");
+    puts("Obs: Em caso de valores negativos ou maiores que a quantidade de alimentos serão considerados todos os alimentos.");
+    int numero_alimentos;
+    scanf(" %d", &numero_alimentos);
 
-
-
+    return numero_alimentos;
 }
 
 int menu(int line_count) {
@@ -98,6 +101,7 @@ int menu(int line_count) {
     }
     else {
         Categoria cat_enum;
+        int tamanho_exibicao;
         switch (selection[0]) {
             case '1':
                 all_categorias(line_count);
@@ -110,33 +114,38 @@ int menu(int line_count) {
 
             case '3':
                 cat_enum = obter_categoria_do_usuario();
-                imprimirFiltrados(alimentos, line_count, cat_enum, DESCRICAO, -1, -1);
+                imprimirFiltrados(alimentos, line_count, cat_enum, ENERGIA, -1, -1);
                 break;
 
             case '4':
                 cat_enum = obter_categoria_do_usuario();
-                imprimirFiltrados(alimentos, line_count, cat_enum, DESCRICAO, 1, 1);
+                tamanho_exibicao = obter_tamanho_vetor_do_usuario();
+                imprimirFiltrados(alimentos, line_count, cat_enum, UMIDADE, -1, tamanho_exibicao);
                 break;
 
             case '5':
-                printf("Apague esse printf e coloque sua função\n");
+                cat_enum = obter_categoria_do_usuario();
+                tamanho_exibicao = obter_tamanho_vetor_do_usuario();
+                imprimirFiltrados(alimentos, line_count, cat_enum, ENERGIA, -1,tamanho_exibicao);
                 break;
 
             case '6':
-                printf("Apague esse printf e coloque sua função\n");
+                cat_enum = obter_categoria_do_usuario();
+                tamanho_exibicao = obter_tamanho_vetor_do_usuario();
+                imprimirFiltrados(alimentos, line_count, cat_enum, PROTEINA, -1,tamanho_exibicao);
                 break;
 
             case '7':
-                printf("Apague esse printf e coloque sua função\n");
+                cat_enum = obter_categoria_do_usuario();
+                tamanho_exibicao = obter_tamanho_vetor_do_usuario();
+                imprimirFiltrados(alimentos, line_count, cat_enum, CARBOIDRATO, -1,tamanho_exibicao);
                 break;
 
             case '8':
-                printf("Apague esse printf e coloque sua função\n");
-                break;
+                
 
             case '9':
-                printf("Apague esse printf e coloque sua função\n");
-                break;
+                
 
             case '0':
                 printf("ENCERRANDO O PROGRAMA.");

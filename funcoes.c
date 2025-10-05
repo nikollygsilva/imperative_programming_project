@@ -238,7 +238,7 @@ void imprimirFiltrados(Alimento vet[], int tamanho_vet, Categoria cat, Campo cam
         return;
     }
 
-    if(tamanho_resultado == -1){
+    if(tamanho_resultado < 1){
         tamanho_resultado = tamanho_filtrado;
     }
     if(tamanho_resultado > tamanho_filtrado){
