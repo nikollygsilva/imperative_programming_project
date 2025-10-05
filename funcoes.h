@@ -40,6 +40,7 @@ Categoria categoria_from_string(const char *str);
 const char *categoria_to_string(Categoria cat);
 Alimento parse_csv_line(char *line);
 void print_tabela(int line_count);
+void all_categorias(int n);
 int tamanho_vetor_filtrado(Alimento vet[], int tamanho_vet,
                            Categoria categoria_escolhida);
 Alimento *criar_vetor_filtrado(Alimento vet[], int tamanho_vet,
@@ -50,4 +51,4 @@ void trocarElementos(void *a, void *b, size_t tamanhoElemento);
 void sortAlg(void *inicio, int tamanhoElemento, int qtdElementos,
              int (*cmp)(const void *, const void *, void *), void *ctx);
 
-#endif
+#endif 

@@ -3,12 +3,13 @@
 #include <stdbool.h>
 #include <stdlib.h>
 #include <string.h>
-
+#include <ctype.h>
+#include <stdbool.h>
 
 Categoria categoria_from_string(const char *str) {
     if (strcmp(str, "Cereais e derivados") == 0)
         return CEREAIS_DERIVADOS;
-    if (strcmp(str, "Frutas e derivados") == 0)
+    if (strcmp(str, "Frutas") == 0)
         return FRUTAS;
     if (strcmp(str, "Verduras e hortaliças") == 0)
         return VERDURAS_HORTALICAS;
@@ -25,7 +26,7 @@ Categoria categoria_from_string(const char *str) {
 const char *categoria_to_string(Categoria cat) {
     switch (cat) {
     case CEREAIS_DERIVADOS:
-        return "Cerais e derivados";
+        return "Cereais e derivados";
     case FRUTAS:
         return "Frutas";
     case VERDURAS_HORTALICAS:
@@ -40,7 +41,6 @@ const char *categoria_to_string(Categoria cat) {
         return "Outros";
     }
 }
-
 
 // Realiza o parsing de cada linha do arquivo
 Alimento parse_csv_line(char *line) {
@@ -102,18 +102,6 @@ void print_tabela(int line_count) {
     }
 }
 
-// Função que imprime as strings de diferentes categorias e por meio de uma variavel de controle controla se ja foi imprimida para não haver impressão duplicada.
-void all_categorias(int n) {
-    printf("As categorias existentes na ficha são:\n");
-        bool impressos[10] = {false};
-    for (int i = 0; i < n; i++) {
-            if (!impressos[alimentos[i].categoria]) {
-                printf("%s\n", categoria_to_string(alimentos[i].categoria));
-                impressos[alimentos[i].categoria] = true;
-            }
-        }
-    }
-
 // Retorna a quantidade de elementos que o vetor, depois de filtrado com base em
 // uma categoria, terá
 int tamanho_vetor_filtrado(Alimento vet[], int tamanho_vet,
@@ -128,20 +116,18 @@ int tamanho_vetor_filtrado(Alimento vet[], int tamanho_vet,
     return count;
 }
 
-
-// Com base no filtro, cria um vetor auxiliar contendo todos os alimentos que
-// pertençam àquela categoria.
-Alimento *criar_vetor_filtrado(Alimento vet[], int tamanho_vet,
-                               Categoria categoria_escolhida,
-                               int *tamanho_filtrado) {
+// Com base no filtro, cria um vetor auxiliar contendo todos os alimentos que pertençam
+// àquela categoria.
+Alimento* criar_vetor_filtrado(Alimento vet[], int tamanho_vet, Categoria categoria_escolhida,
+                               int *tamanho_filtrado){
     *tamanho_filtrado = tamanho_vetor_filtrado(vet, tamanho_vet, categoria_escolhida);
-
-    if (*tamanho_filtrado == 0) {
+    
+    if(*tamanho_filtrado == 0){
         return NULL;
     }
 
-    Alimento *aux = (Alimento *)malloc((*tamanho_filtrado) * sizeof(Alimento));
-    if (aux == NULL) {
+    Alimento *aux = (Alimento*) malloc((*tamanho_filtrado) * sizeof(Alimento));
+    if(aux == NULL){
         perror("Falha ao alocar memoria para vetor filtrado");
         return NULL;
     }
@@ -154,8 +140,10 @@ Alimento *criar_vetor_filtrado(Alimento vet[], int tamanho_vet,
         }
     }
 
+
     return aux;
 }
+
 
 
 int cmp_alimento(const void *pa, const void *pb, void *ctx) {
@@ -164,51 +152,40 @@ int cmp_alimento(const void *pa, const void *pb, void *ctx) {
     Campo campo = *(Campo *)ctx;
 
     switch (campo) {
-    case DESCRICAO:
-        return strcmp(a->descricao, b->descricao);
-    case UMIDADE:
-        if (a->umidade < b->umidade)
-            return -1;
-        if (a->umidade > b->umidade)
-            return 1;
-        return 0;
-    case ENERGIA:
-        if (a->energia < b->energia)
-            return -1;
-        if (a->energia > b->energia)
-            return 1;
-        return 0;
-    case PROTEINA:
-        if (a->proteina < b->proteina)
-            return -1;
-        if (a->proteina > b->proteina)
-            return 1;
-        return 0;
-    case CARBOIDRATO:
-        if (a->carboidrato < b->carboidrato)
-            return -1;
-        if (a->carboidrato > b->carboidrato)
-            return 1;
-        return 0;
-    case CATEGORIA:
-        if (a->categoria < b->categoria)
-            return -1;
-        if (a->categoria > b->categoria)
-            return 1;
-        return 0;
+        case DESCRICAO:
+            return strcmp(a->descricao, b->descricao);
+        case UMIDADE:
+            if(a->umidade < b->umidade) return -1;
+            if(a->umidade > b->umidade) return 1;
+            return 0;
+        case ENERGIA:
+            if(a->energia < b->energia) return -1;
+            if(a->energia > b->energia) return 1;
+            return 0;
+        case PROTEINA:
+            if(a->proteina < b->proteina) return -1;
+            if(a->proteina > b->proteina) return 1;
+            return 0;
+        case CARBOIDRATO:
+            if(a->carboidrato < b->carboidrato) return -1;
+            if(a->carboidrato > b->carboidrato) return 1;
+            return 0;
+        case CATEGORIA:
+            if(a->categoria < b->categoria) return -1;
+            if(a->categoria > b->categoria) return 1;
+            return 0;
     }
     return -2; // se chegar aqui, algo está errado
 }
 
 
 // Troca dois elementos de lugar entre si
-void trocarElementos(void *a, void *b, size_t tamanhoElemento) {
+void trocarElementos(void *a, void *b, size_t tamanhoElemento){
     char temp[tamanhoElemento];
     memcpy(temp, a, tamanhoElemento);
     memcpy(a, b, tamanhoElemento);
     memcpy(b, temp, tamanhoElemento);
 }
-
 
 // Algoritmo de ordenação genérica.
 // Independente do tipo de dado passado, a função ordena
@@ -234,27 +211,77 @@ void sortAlg(void *inicio, int tamanhoElemento, int qtdElementos,
             break;
     }
 }
+#include <stdio.h>
+#include "funcoes.h"
 
+void bubbleSortDecrescente(OrdenacaoHelper vetor[], int n) {
+    for (int i = 0; i < n - 1; i++) {
+        for (int j = 0; j < n - i - 1; j++) {
+            if (vetor[j].valor < vetor[j + 1].valor) {
+                OrdenacaoHelper temp = vetor[j];
+                vetor[j] = vetor[j + 1];
+                vetor[j + 1] = temp;
+            }
+        }
+    }
+}
 
-// Função que recebe um vetor de Alimento, o tamanho do vetor, uma categoria e um campo,
-// e imprime um vetor daquela categoria ordenando com base no campo.
-void imprimirFiltrados(Alimento vet[], int tamanho_vet, Categoria cat, Campo campo_ordenacao){
-    int tamanho_filtrado;
-    Alimento *aux_alimentos = criar_vetor_filtrado(alimentos, MAX_LINES, cat, &tamanho_filtrado);
-    if (aux_alimentos == NULL) {
-        printf("Nenhum alimento encontrado na categoria.\n");
+void listarTopRelacaoEnergiaProteina(Alimento alimentos[], int numAlimentos) {
+    int categoriaDesejada, n;
+
+    printf("\nDigite o codigo da categoria (1-15): ");
+    scanf("%d", &categoriaDesejada);
+    printf("Digite a quantidade de alimentos a listar (N): ");
+    scanf("%d", &n);
+
+    OrdenacaoHelper alimentosCategoria[numAlimentos];
+    int count = 0;
+
+    for (int i = 0; i < numAlimentos; i++) {
+        if (alimentos[i].categoria == categoriaDesejada && alimentos[i].proteina > 0) {
+            alimentosCategoria[count].valor = (double)alimentos[i].energia / alimentos[i].proteina;
+            alimentosCategoria[count].ptr = &alimentos[i];
+            count++;
+        }
     }
 
-    Campo campo = campo_ordenacao;
-    sortAlg(aux_alimentos, sizeof(Alimento), tamanho_filtrado, cmp_alimento, &campo);
+    bubbleSortDecrescente(alimentosCategoria, count);
 
-    printf("\nLista de alimentos da categoria:\n");
-    for(int i = 0; i < tamanho_filtrado; i++){
-        printf("%d | %s | %.1f | %d | %.1f | %.1f | %u\n", aux_alimentos[i].numero,
-        aux_alimentos[i].descricao, aux_alimentos[i].umidade,
-        aux_alimentos[i].energia, aux_alimentos[i].proteina,
-        aux_alimentos[i].carboidrato, aux_alimentos[i].categoria);
+    printf("\n--- Top %d Alimentos com Maior Relacao Energia/Proteina ---\n", n);
+    for (int i = 0; i < n && i < count; i++) {
+        printf("%d. %s: Relacao de %.2f\n",
+               i + 1,
+               alimentosCategoria[i].ptr->descricao,
+               alimentosCategoria[i].valor);
+    }
+}
+
+void listarTopRelacaoEnergiaCarboidrato(Alimento alimentos[], int numAlimentos) {
+    int categoriaDesejada, n;
+
+    printf("\nDigite o codigo da categoria (1-15): ");
+    scanf("%d", &categoriaDesejada);
+    printf("Digite a quantidade de alimentos a listar (N): ");
+    scanf("%d", &n);
+
+    OrdenacaoHelper alimentosCategoria[numAlimentos];
+    int count = 0;
+
+    for (int i = 0; i < numAlimentos; i++) {
+        if (alimentos[i].categoria == categoriaDesejada && alimentos[i].carboidrato > 0) {
+            alimentosCategoria[count].valor = (double)alimentos[i].energia / alimentos[i].carboidrato;
+            alimentosCategoria[count].ptr = &alimentos[i];
+            count++;
+        }
     }
 
-    free(aux_alimentos);
+    bubbleSortDecrescente(alimentosCategoria, count);
+
+    printf("\n--- Top %d Alimentos com Maior Relacao Energia/Carboidrato ---\n", n);
+    for (int i = 0; i < n && i < count; i++) {
+        printf("%d. %s: Relacao de %.2f\n",
+               i + 1,
+               alimentosCategoria[i].ptr->descricao,
+               alimentosCategoria[i].valor);
+    }
 }

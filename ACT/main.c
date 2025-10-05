@@ -4,19 +4,19 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "funcoes.h"
 #include <windows.h> //Na teoria, isso será desativado nos outros sistemas operacionais
 
 #define MAX_LINES 101
 #define MAX_LINE_SIZE 1024
 
-bool control = true; //variavel de controle para manter em loop
+const bool control= true; //variavel de controle para manter em loop
 
 
-void plataforma() { // função para tudo funcionar corretamente em cada plataforma
+void plataforma() { //funçao apenas para colocar os comandinhos
 #ifdef _WIN32
-    // Cobre tanto Windows 32 bits quanto 64 bits.
+    // This covers both 32-bit and 64-bit Windows
     printf("Running on Windows!\n");
+
 #elif _linux_
     printf("Running on Linux!\n");
 #elif _APPLE_
@@ -24,14 +24,28 @@ void plataforma() { // função para tudo funcionar corretamente em cada platafo
 #else
     printf("Unknown platform!\n");
 #endif
+
 }
 
-//Função feita para comparação completa de strings (ver se está em ordem alfabetica) e será utilizada pela funçao (da biblioteca) qsort.
+//------------------------------------------------------------------------------
+
+void all_categorias(int n) {
+    printf("As categorias existentes na ficha são:\n");
+        bool impressos[10] = {false}; // array para marcar categorias já impressas
+    for (int i = 0; i < n; i++) {
+            if (!impressos[alimentos[i].categoria]) {
+                printf("%s\n", categoria_to_string(alimentos[i].categoria));
+                impressos[alimentos[i].categoria] = true;
+            }
+    }
+}
+
+//Função com o intuito de colocar os itens em ordem alfabetica.
 int comparafuncao2(const void *a, const void *b) {
     return strcmp(((Alimento *)a)->descricao, ((Alimento *)b)->descricao);
 }
 
-//Essa funcao itera sobre as linhas da categoria e compara com a categoria solicitada (cat) e guarda esse objeto em um vetor. Logo apos são organizdos pela função qsort e imprimidos em ordem.
+
 void categoriavalidacao(Alimento alimentos[], int line_count, Categoria cat) {
     Alimento selecionados[line_count];
     int count = 0;
@@ -55,7 +69,6 @@ void categoriavalidacao(Alimento alimentos[], int line_count, Categoria cat) {
                selecionados[i].carboidrato);
     }
 }
-// Uso da função categoria para impressao das categorias solicitadas
 int categoria_usuario(int line_count) {
         printf("Categorias\n");
         printf("1- Cereais e derivados\n");
@@ -89,60 +102,48 @@ int categoria_usuario(int line_count) {
                 case '4': categoriavalidacao(alimentos,line_count,CARNES);break;
                 case '5':categoriavalidacao(alimentos,line_count,LATICINIOS);break;
                 case '6': categoriavalidacao(alimentos,line_count,LEGUMINOSAS);break;
-                case '7':categoriavalidacao(alimentos,line_count,OUTROS);break;}
-        }};
+                case '7':categoriavalidacao(alimentos,line_count,OUTROS);break;
+            }
+        }
+    return 0;
+}
 
 
 int menu(int line_count) {
-    printf("                                                                                                                                \n");
-    printf("===================MENU=======================================================================================================\n");
+    printf("                                        \n");
+    printf(
+        "===================MENU==========================================\n");
     printf("                                        \n");
     printf("1. LISTAR TODAS AS CATEGORIAS DE ALIMENTO.\n");
-    printf("2. LISTAR TODOS ALIMENTOS DE CATEGORIA ESPECÍFICA E EM ORDEM ALFABETICA.\n");
-    printf("3. LISTAR TODOS ALIMENTOS DE CATEGORIA E EM ORDEM DECRESCENTE COM RESPEITO À CAPACIDADE ENERGETICA DOS ALIMENTOS.\n");
-    printf("4. LISTAR ALIMENTOS DE CERTA CATEGORIA COM MAIOR PERCENTUAL DE UMIDADE.\n");
-    printf("5. LISTAR ALIMENTOS DE CERTA CATEGORIA COM MAIOR CAPACIDADE ENERGÉTICA.\n");
-    printf("6. LISTAR ALIMENTOS DE CERTA CATEGORIA COM MAIOR QUANTIDADE DE PROTEÍNA.\n");
-    printf("7. LISTAR ALIMENTOS DE CERTA CATEGORIA COM MAIOR QUANTIDADE DE CARBOIDRATO.\n");
-    printf("8. LISTAR ALIMENTOS DE CERTA CATEGORIA QUE POSSUAM A RELAÇÃO MAIS ALTA ENTRE ENERGIA E PROTEÍNA.\n");
-    printf("9. LISTAR ALIMENTOS DE CERTA CATEGORIA QUE POSSUAM A RELAÇÃO MAIS ALTA ENTRE ENERGIA E CARBOIDRATO.\n");
-    printf("0. ENCERRAR O PROGRAMA.\n");
+    printf("2. LISTAR TODOS ALIMENTOS DE CATEGORIA ESPECÍFICA E EM ORDEM ALFABETICA\n");
+    printf("3. LISTAR TODOS ALIMENTOS DE CATEGORIA E EM ORDEM DECRESCENTE COM RESPEITO À CAPACIDADE ENERGETICAS  DOS ALIMENTOS\n");
+    printf("4. *********\n");
+    printf("5. *********\n");
+    printf("6. *********\n");
+    printf("7. *********\n");
+    printf("8. *********\n");
+    printf("9. *********\n");
     printf(
-        "------------------------------------------------------------------------------------------------------\n");
+        "------------------------------------------------------------------\n");
 
-    char selection[2];
+    char selection[100];
     printf("Digite o número da opção desejada:");
-    scanf(" %1s", selection);
+    scanf(" %99s", selection);
     printf("-------------------------------------\n");
 
     if (strlen(selection) > 1) {
         printf("= Você digitou mais de um caractere! Digite apenas um.\n");
         return 0;
     }
+
     else if (!isdigit(selection[0])) {
         printf("= Entrada Inválida! Tente novamente!\n");
         return 0;
-    }
-    else {
+    } else {
         switch (selection[0]) {
             case '1': all_categorias(line_count);
                 break;
-            case '2':
-            char categoria_escolhida;
-            do {
-                puts("Digite o número da categoria desejada.\n");
-                puts("Para mais informações, digite a opção 1 do menu (digite 0 para sair)");
-
-                scanf(" %c", &categoria_escolhida);
-
-                // limpa o buffer
-                int c;
-                while((c = getchar()) != '\n' && c != EOF);
-            } while (!isdigit(categoria_escolhida) || categoria_escolhida > '7');
-            
-            if(categoria_escolhida == '0') break;
-            
-            categoria_usuario(line_count);
+            case '2': categoria_usuario(line_count);
                 break;
             case '3': printf("Apague esse printf e coloque sua função\n");
                 break;
@@ -164,16 +165,13 @@ int menu(int line_count) {
             case '9':
                 printf("Apague esse printf e coloque sua função\n");
                 break;
-            case '0':
-                printf("ENCERRANDO O PROGRAMA.");
-                control = false;
-                return 0;
             default:
                 printf("Opção inválida! Digite uma opção válida");
         }
     }
     return 0;
 }
+
 
 int main() {
     SetConsoleOutputCP(CP_UTF8);
@@ -196,8 +194,7 @@ int main() {
 
     fclose(arquivo);
     plataforma();
-    
+    print_tabela(line_count);
     while (control) {
-        menu(line_count);
-    }
+        menu(line_count);}
 }
