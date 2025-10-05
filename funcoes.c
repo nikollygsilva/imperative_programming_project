@@ -187,6 +187,18 @@ int cmp_alimento(const void *pa, const void *pb, void *ctx) {
         if (a->categoria > b->categoria)
             return 1;
         return 0;
+    case REL_ENERGIA_PROTEINA:
+        if (a->energia * a->proteina < b->energia * b->proteina)
+            return -1;
+        if (a->energia * a->proteina > b->energia * b->proteina)
+            return 1;
+        return 0;
+    case REL_ENERGIA_CARBOIDRATO:
+        if (a->energia * a->carboidrato < b->energia * b->carboidrato)
+            return -1;
+        if (a->energia * a->carboidrato > b->energia * b->carboidrato)
+            return 1;
+        return 0;
     }
     return -2; // se chegar aqui, algo está errado
 }

@@ -22,7 +22,9 @@ typedef enum {
     ENERGIA,
     PROTEINA,
     CARBOIDRATO,
-    CATEGORIA
+    CATEGORIA,
+    REL_ENERGIA_PROTEINA,
+    REL_ENERGIA_CARBOIDRATO
 } Campo;
 
 typedef struct {

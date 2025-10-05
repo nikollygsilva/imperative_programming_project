@@ -126,26 +126,32 @@ int menu(int line_count) {
             case '5':
                 cat_enum = obter_categoria_do_usuario();
                 tamanho_exibicao = obter_tamanho_vetor_do_usuario();
-                imprimirFiltrados(alimentos, line_count, cat_enum, ENERGIA, -1,tamanho_exibicao);
+                imprimirFiltrados(alimentos, line_count, cat_enum, ENERGIA, -1, tamanho_exibicao);
                 break;
 
             case '6':
                 cat_enum = obter_categoria_do_usuario();
                 tamanho_exibicao = obter_tamanho_vetor_do_usuario();
-                imprimirFiltrados(alimentos, line_count, cat_enum, PROTEINA, -1,tamanho_exibicao);
+                imprimirFiltrados(alimentos, line_count, cat_enum, PROTEINA, -1, tamanho_exibicao);
                 break;
 
             case '7':
                 cat_enum = obter_categoria_do_usuario();
                 tamanho_exibicao = obter_tamanho_vetor_do_usuario();
-                imprimirFiltrados(alimentos, line_count, cat_enum, CARBOIDRATO, -1,tamanho_exibicao);
+                imprimirFiltrados(alimentos, line_count, cat_enum, CARBOIDRATO, -1, tamanho_exibicao);
                 break;
 
             case '8':
-                
+                cat_enum = obter_categoria_do_usuario();
+                tamanho_exibicao = obter_tamanho_vetor_do_usuario();
+                imprimirFiltrados(alimentos, line_count, cat_enum, REL_ENERGIA_PROTEINA, -1, tamanho_exibicao);
+                break;
 
             case '9':
-                
+                cat_enum = obter_categoria_do_usuario();
+                tamanho_exibicao = obter_tamanho_vetor_do_usuario();
+                imprimirFiltrados(alimentos, line_count, cat_enum, REL_ENERGIA_CARBOIDRATO, -1, tamanho_exibicao);
+                break;
 
             case '0':
                 printf("ENCERRANDO O PROGRAMA.");
