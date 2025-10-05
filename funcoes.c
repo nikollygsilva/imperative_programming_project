@@ -4,11 +4,14 @@
 #include <stdlib.h>
 #include <string.h>
 
+Alimento alimentos[MAX_LINES];
+bool control = true;
+
 Categoria obter_categoria_do_usuario() {
     char categoria_escolhida;
 
     do {
-        puts("Digite o número da categoria desejada.");
+        puts("Digite o número da categoria desejada: ");
         puts("Para mais informações, digite a opção 1 do menu (digite 0 para "
              "sair)");
 
@@ -93,7 +96,7 @@ int menu(int line_count) {
            "-----------------------------------\n");
 
     char selection[2];
-    printf("Digite o número da opção desejada:");
+    printf("Digite o número da opção desejada: ");
     scanf(" %1s", selection);
     printf("-------------------------------------\n");
 

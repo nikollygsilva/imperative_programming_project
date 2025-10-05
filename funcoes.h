@@ -36,8 +36,8 @@ typedef enum {
     REL_ENERGIA_CARBOIDRATO
 } Campo;
 
-Alimento alimentos[MAX_LINES];
-bool control = true; // Variável de controle para manter em loop
+extern Alimento alimentos[MAX_LINES];
+extern bool control; // Variável de controle para manter em loop
 
 Alimento parse_csv_line(char *line);
 Categoria categoria_from_string(const char *str);
