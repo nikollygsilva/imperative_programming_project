@@ -6,17 +6,17 @@
 
 
 Categoria categoria_from_string(const char *str) {
-    if (strcmp(str, "Cereais e derivados") == 0)
+    if (strcmp(str, "Cereais e derivados") == 0 || strcmp(str, "1") == 0)
         return CEREAIS_DERIVADOS;
-    if (strcmp(str, "Frutas e derivados") == 0)
+    else if (strcmp(str, "Frutas e derivados") == 0 || strcmp(str, "2") == 0)
         return FRUTAS;
-    if (strcmp(str, "Verduras e hortaliças") == 0)
+    else if (strcmp(str, "Verduras, hortaliças e derivados") == 0 || strcmp(str, "3") == 0)
         return VERDURAS_HORTALICAS;
-    if (strcmp(str, "Carnes e derivados") == 0)
+    else if (strcmp(str, "Carnes e derivados") == 0 || strcmp(str, "4") == 0)
         return CARNES;
-    if (strcmp(str, "Leite e derivados") == 0)
+    else if (strcmp(str, "Leite e derivados") == 0 || strcmp(str, "5") == 0)
         return LATICINIOS;
-    if (strcmp(str, "Leguminosas e derivados") == 0)
+    else if (strcmp(str, "Leguminosas e derivados") == 0 || strcmp(str, "6") == 0)
         return LEGUMINOSAS;
     return OUTROS;
 }
@@ -29,7 +29,7 @@ const char *categoria_to_string(Categoria cat) {
     case FRUTAS:
         return "Frutas";
     case VERDURAS_HORTALICAS:
-        return "Verduras e hortaliças";
+        return "Verduras, hortaliças e derivados";
     case CARNES:
         return "Carnes e derivados";
     case LATICINIOS:
@@ -92,15 +92,6 @@ Alimento parse_csv_line(char *line) {
     return a;
 }
 
-// Função auxiliar que realiza o print do nosso vetor de structs (alimentos)
-void print_tabela(int line_count) {
-    for (int i = 0; i < line_count; i++) {
-        printf("%d | %s | %.1f | %d | %.1f | %.1f | %u\n", alimentos[i].numero,
-               alimentos[i].descricao, alimentos[i].umidade,
-               alimentos[i].energia, alimentos[i].proteina,
-               alimentos[i].carboidrato, alimentos[i].categoria);
-    }
-}
 
 // Função que imprime as strings de diferentes categorias e por meio de uma variavel de controle controla se ja foi imprimida para não haver impressão duplicada.
 void all_categorias(int n) {
@@ -213,7 +204,7 @@ void trocarElementos(void *a, void *b, size_t tamanhoElemento) {
 // Algoritmo de ordenação genérica.
 // Independente do tipo de dado passado, a função ordena
 void sortAlg(void *inicio, int tamanhoElemento, int qtdElementos,
-             int (*cmp)(const void *, const void *, void *), void *ctx) {
+             int (*cmp)(const void *, const void *, void *), void *ctx, int ordem) {
     char *arr = (char *)inicio;
 
     for (int i = 0; i < qtdElementos - 1; i++) {
@@ -223,7 +214,7 @@ void sortAlg(void *inicio, int tamanhoElemento, int qtdElementos,
         for (int j = 0; j < qtdElementos - i - 1; j++) {
             void *elem1 = arr + j * tamanhoElemento;
             void *elem2 = arr + (j + 1) * tamanhoElemento;
-            if (cmp(elem1, elem2, ctx) > 0) {
+            if (ordem * cmp(elem1, elem2, ctx) > 0) {
                 trocarElementos(elem1, elem2, tamanhoElemento);
                 troca = 1;
             }
@@ -238,18 +229,27 @@ void sortAlg(void *inicio, int tamanhoElemento, int qtdElementos,
 
 // Função que recebe um vetor de Alimento, o tamanho do vetor, uma categoria e um campo,
 // e imprime um vetor daquela categoria ordenando com base no campo.
-void imprimirFiltrados(Alimento vet[], int tamanho_vet, Categoria cat, Campo campo_ordenacao){
+void imprimirFiltrados(Alimento vet[], int tamanho_vet, Categoria cat, Campo campo_ordenacao, int ordem, int tamanho_resultado){
     int tamanho_filtrado;
-    Alimento *aux_alimentos = criar_vetor_filtrado(alimentos, MAX_LINES, cat, &tamanho_filtrado);
+    Alimento *aux_alimentos = criar_vetor_filtrado(vet, tamanho_vet, cat, &tamanho_filtrado);
     if (aux_alimentos == NULL) {
         printf("Nenhum alimento encontrado na categoria.\n");
+        if (aux_alimentos) free(aux_alimentos);
+        return;
+    }
+
+    if(tamanho_resultado == -1){
+        tamanho_resultado = tamanho_filtrado;
+    }
+    if(tamanho_resultado > tamanho_filtrado){
+        tamanho_resultado = tamanho_filtrado;
     }
 
     Campo campo = campo_ordenacao;
-    sortAlg(aux_alimentos, sizeof(Alimento), tamanho_filtrado, cmp_alimento, &campo);
+    sortAlg(aux_alimentos, sizeof(Alimento), tamanho_resultado, cmp_alimento, &campo, ordem);
 
     printf("\nLista de alimentos da categoria:\n");
-    for(int i = 0; i < tamanho_filtrado; i++){
+    for(int i = 0; i < tamanho_resultado; i++){
         printf("%d | %s | %.1f | %d | %.1f | %.1f | %u\n", aux_alimentos[i].numero,
         aux_alimentos[i].descricao, aux_alimentos[i].umidade,
         aux_alimentos[i].energia, aux_alimentos[i].proteina,

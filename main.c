@@ -4,7 +4,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "funcoes.h"
 #include <windows.h> //Na teoria, isso será desativado nos outros sistemas operacionais
 
 #define MAX_LINES 101
@@ -12,6 +11,7 @@
 
 bool control = true; //variavel de controle para manter em loop
 
+Alimento alimentos[MAX_LINES];
 
 void plataforma() { // função para tudo funcionar corretamente em cada plataforma
 #ifdef _WIN32
@@ -26,72 +26,45 @@ void plataforma() { // função para tudo funcionar corretamente em cada platafo
 #endif
 }
 
-//Função feita para comparação completa de strings (ver se está em ordem alfabetica) e será utilizada pela funçao (da biblioteca) qsort.
-int comparafuncao2(const void *a, const void *b) {
-    return strcmp(((Alimento *)a)->descricao, ((Alimento *)b)->descricao);
-}
+Categoria obter_categoria_do_usuario() {
+    char categoria_escolhida;
+    
+    do {
+        puts("Digite o número da categoria desejada.");
+        puts("Para mais informações, digite a opção 1 do menu (digite 0 para sair)");
 
-//Essa funcao itera sobre as linhas da categoria e compara com a categoria solicitada (cat) e guarda esse objeto em um vetor. Logo apos são organizdos pela função qsort e imprimidos em ordem.
-void categoriavalidacao(Alimento alimentos[], int line_count, Categoria cat) {
-    Alimento selecionados[line_count];
-    int count = 0;
+        scanf(" %c", &categoria_escolhida);
+        int c;
+        while((c = getchar()) != '\n' && c != EOF); // Limpa o buffer
 
-    for (int i = 0; i < line_count; i++) {
-        if (alimentos[i].categoria == cat) {
-            selecionados[count++] = alimentos[i]; // "guarda" o elemento no novo array
-            }}
+        if (!isdigit(categoria_escolhida) || categoria_escolhida > '7') {
+            printf("\nOpção inválida! Por favor, tente novamente.\n");
+        }
 
-    qsort(selecionados, count, sizeof(Alimento), comparafuncao2);
-
-
-        printf("Numero do alimento | Descricao do alimento | Umidade (%%) | Energia (Kcal) | Proteina (g) | Carboidrato (g)\n");
-    for (int i = 0; i < count; i++) {
-        printf("%10i/  %20s | %.2f | %i | %.2f | %.2f\n",
-               selecionados[i].numero,
-               selecionados[i].descricao,
-               selecionados[i].umidade,
-               selecionados[i].energia,
-               selecionados[i].proteina,
-               selecionados[i].carboidrato);
+    } while (!isdigit(categoria_escolhida) || categoria_escolhida > '7');
+    
+    if (categoria_escolhida == '0') {
+        return -1;
     }
+
+    Categoria cat_enum;
+    switch (categoria_escolhida) {
+        case '1': cat_enum = CEREAIS_DERIVADOS; break;
+        case '2': cat_enum = FRUTAS; break;
+        case '3': cat_enum = VERDURAS_HORTALICAS; break;
+        case '4': cat_enum = CARNES; break;
+        case '5': cat_enum = LATICINIOS; break;
+        case '6': cat_enum = LEGUMINOSAS; break;
+        case '7': cat_enum = OUTROS; break;
+    }
+    return cat_enum;
 }
-// Uso da função categoria para impressao das categorias solicitadas
-int categoria_usuario(int line_count) {
-        printf("Categorias\n");
-        printf("1- Cereais e derivados\n");
-        printf("2- Frutas e derivados\n");
-        printf("3- Verduras e hortaliases\n");
-        printf("4- Carnes e derivados\n");
-        printf("5- Leite e derivados\n");
-        printf("6- Leguminosas e derivados\n");
-        printf("7- Outros\n");
 
-        char category[100];
-        printf("Digite o número da categoria desejada:");
-        scanf(" %99s", category);
-        printf("-------------------------------------\n");
+int obter_tamanho_vetor_do_usuario(){
 
-        if (strlen(category) > 1) {
-            printf("= Você digitou mais de um caractere! Digite apenas um.\n");
-            return 0;
-        }
 
-        else if (!isdigit(category[0])) {
-            printf("= Entrada Inválida! Tente novamente!\n");
-            return 0;
-        }
-        else {
-            switch (category[0]) {
 
-                case '1': categoriavalidacao(alimentos,line_count,CEREAIS_DERIVADOS);break;
-                case '2': categoriavalidacao(alimentos,line_count,FRUTAS);break;
-                case '3': categoriavalidacao(alimentos,line_count,VERDURAS_HORTALICAS);break;
-                case '4': categoriavalidacao(alimentos,line_count,CARNES);break;
-                case '5':categoriavalidacao(alimentos,line_count,LATICINIOS);break;
-                case '6': categoriavalidacao(alimentos,line_count,LEGUMINOSAS);break;
-                case '7':categoriavalidacao(alimentos,line_count,OUTROS);break;}
-        }};
-
+}
 
 int menu(int line_count) {
     printf("                                                                                                                                \n");
@@ -124,46 +97,47 @@ int menu(int line_count) {
         return 0;
     }
     else {
+        Categoria cat_enum;
         switch (selection[0]) {
-            case '1': all_categorias(line_count);
+            case '1':
+                all_categorias(line_count);
                 break;
+
             case '2':
-            char categoria_escolhida;
-            do {
-                puts("Digite o número da categoria desejada.\n");
-                puts("Para mais informações, digite a opção 1 do menu (digite 0 para sair)");
-
-                scanf(" %c", &categoria_escolhida);
-
-                // limpa o buffer
-                int c;
-                while((c = getchar()) != '\n' && c != EOF);
-            } while (!isdigit(categoria_escolhida) || categoria_escolhida > '7');
-            
-            if(categoria_escolhida == '0') break;
-            
-            categoria_usuario(line_count);
+                cat_enum = obter_categoria_do_usuario();
+                imprimirFiltrados(alimentos, line_count, cat_enum, DESCRICAO, 1, -1);
                 break;
-            case '3': printf("Apague esse printf e coloque sua função\n");
+
+            case '3':
+                cat_enum = obter_categoria_do_usuario();
+                imprimirFiltrados(alimentos, line_count, cat_enum, DESCRICAO, -1, -1);
                 break;
+
             case '4':
-                printf("Apague esse printf e coloque sua função\n");
+                cat_enum = obter_categoria_do_usuario();
+                imprimirFiltrados(alimentos, line_count, cat_enum, DESCRICAO, 1, 1);
                 break;
+
             case '5':
                 printf("Apague esse printf e coloque sua função\n");
                 break;
+
             case '6':
                 printf("Apague esse printf e coloque sua função\n");
                 break;
+
             case '7':
                 printf("Apague esse printf e coloque sua função\n");
                 break;
+
             case '8':
                 printf("Apague esse printf e coloque sua função\n");
                 break;
+
             case '9':
                 printf("Apague esse printf e coloque sua função\n");
                 break;
+
             case '0':
                 printf("ENCERRANDO O PROGRAMA.");
                 control = false;
