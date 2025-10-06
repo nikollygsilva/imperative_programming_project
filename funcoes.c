@@ -537,10 +537,11 @@ void print_vetor_filtrado(Alimento vet[], Categoria cat, Campo campo_ordenacao,
         printf("Descrição: %s | Umidade: "
                "%.1f | Energia (kcal): %d | Proteína (g): %.1f | Carboidrato "
                "(g): %.1f | "
-               "Categoria: %u\n",
+               "Categoria: %s\n",
                aux_alimentos[i].descricao, aux_alimentos[i].umidade,
                aux_alimentos[i].energia, aux_alimentos[i].proteina,
-               aux_alimentos[i].carboidrato, aux_alimentos[i].categoria);
+               aux_alimentos[i].carboidrato,
+               categoria_to_string(aux_alimentos[i].categoria));
     }
 
     free(aux_alimentos);
