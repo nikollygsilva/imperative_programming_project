@@ -1,11 +1,14 @@
 #include "funcoes.h"
 #include <stdio.h>
 
+#ifdef _WIN32
+#include <windows.h>
+#endif
+
 int tamanho_vetor_alimentos = 0;
 
 int main() {
 #ifdef _WIN32
-#include <windows.h>
     SetConsoleOutputCP(CP_UTF8);
 #endif
 
