@@ -69,6 +69,10 @@ int obter_tamanho_vetor_do_usuario() {
 }
 
 int deseja_voltar_menu() {
+    if (!control) {
+        return 0;
+    }
+
     puts("");
     printf("-------------------------------------\n");
 
@@ -487,7 +491,6 @@ void bubble_sort_generico(void *inicio, int tamanhoElemento, int qtdElementos,
     char *arr = (char *)inicio;
 
     for (int i = 0; i < qtdElementos - 1; i++) {
-        // variável para checar se algum elemento foi trocado de lugar
         int troca = 0;
 
         for (int j = 0; j < qtdElementos - i - 1; j++) {
@@ -498,8 +501,6 @@ void bubble_sort_generico(void *inicio, int tamanhoElemento, int qtdElementos,
                 troca = 1;
             }
         }
-        // se em uma passagem nenhum elemento foi trocado de ordem,
-        // então já estava ordenado.
         if (!troca)
             break;
     }
@@ -533,11 +534,13 @@ void print_vetor_filtrado(Alimento vet[], Categoria cat, Campo campo_ordenacao,
 
     printf("\nLista de alimentos da categoria:\n");
     for (int i = 0; i < tamanho_resultado; i++) {
-        printf("%d | %s | %.1f | %d | %.1f | %.1f | %u\n",
-               aux_alimentos[i].numero, aux_alimentos[i].descricao,
-               aux_alimentos[i].umidade, aux_alimentos[i].energia,
-               aux_alimentos[i].proteina, aux_alimentos[i].carboidrato,
-               aux_alimentos[i].categoria);
+        printf("Descrição: %s | Umidade: "
+               "%.1f | Energia (kcal): %d | Proteína (g): %.1f | Carboidrato "
+               "(g): %.1f | "
+               "Categoria: %u\n",
+               aux_alimentos[i].descricao, aux_alimentos[i].umidade,
+               aux_alimentos[i].energia, aux_alimentos[i].proteina,
+               aux_alimentos[i].carboidrato, aux_alimentos[i].categoria);
     }
 
     free(aux_alimentos);
